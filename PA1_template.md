@@ -114,7 +114,7 @@ sum.na
 cnt <- length(activity$steps)
 for (i in 1:cnt) {
   if (is.na(activity$steps[i])>0) {
-	     g <- avsteps$Av.Steps[avsteps$interval==activity$interval[i]]
+       g <- avsteps$Av.Steps[avsteps$interval==activity$interval[i]]
 		 activity$stepfull[i] <- g
 	}
 	else {
@@ -187,4 +187,3 @@ actvtagg <- rbind(avwkend, avwkday)
 ## Plot of 5-minute interval (x-axis) vs. avg. steps taken: weekday/weekend(y-axis)
 xyplot(Av.Steps ~ interval | FactDay, data = actvtagg, type = "l", ylab ="Number of steps", layout=c(1,2))
 ```
-
