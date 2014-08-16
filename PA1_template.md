@@ -9,7 +9,8 @@ ________________________________________________________________________________
 #### Peer Assesment Project 1:
 Installing/loading packages:
 
-```{r Load Packages, echo=TRUE}
+
+```r
 ## Install and load ggplot2 WARNING: Skip install if package is already installed!
 ## Before running this code, ensure that the data file "activity.csv"
 ## is already IN YOUR WORKING DIRECTORY
@@ -27,7 +28,8 @@ Show any code that is needed to
 
 2.) Process/transform the data (if necessary) into a format suitable for your analysis
 
-```{r Load Data, echo=TRUE}
+
+```r
 ########################################
 ## Loading and preprocessing the data ##
 ########################################
@@ -45,7 +47,8 @@ For this part of the assignment, you can ignore the missing values in the datase
 
 2.) Calculate and report the mean and median total number of steps taken per day
 
-```{r Histogram and Mean/Median Steps, echo=TRUE}
+
+```r
 #######################################################
 ## What is mean total number of steps taken per day? ##
 #######################################################
@@ -57,10 +60,25 @@ colnames(sumsteps) <- c("date", "Sum.Steps")
 ## Histogram of steps
 attach(sumsteps)
 hist(Sum.Steps)
+```
 
+![plot of chunk Histogram and Mean/Median Steps](figure/Histogram and Mean/Median Steps.png) 
+
+```r
 ## Mean and median of steps (although evident from histogram):
 mean(Sum.Steps)
+```
+
+```
+## [1] 9354
+```
+
+```r
 median(Sum.Steps)
+```
+
+```
+## [1] 10395
 ```
   <br />
   <br />
@@ -71,7 +89,8 @@ median(Sum.Steps)
 
 2.) Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
-```{r Average Daily Activity Pattern, echo=TRUE}
+
+```r
 #################################################
 ## What is the average daily activity pattern? ##
 #################################################
@@ -81,10 +100,18 @@ avsteps <- aggregate(activity$steps, by=list(activity$interval), FUN=mean, na.rm
 colnames(avsteps) <- c("interval", "Av.Steps")
 attach(avsteps)
 plot(interval, Av.Steps, type="l")
+```
 
+![plot of chunk Average Daily Activity Pattern](figure/Average Daily Activity Pattern.png) 
+
+```r
 ## Interval with max number of steps:
 k <- which.max(Av.Steps)
 interval[k]
+```
+
+```
+## [1] 835
 ```
   <br />
   <br />
@@ -101,7 +128,8 @@ Note that there are a number of days/intervals where there are missing values (c
 
 4.) Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
-```{r Inputing Missing Values, echo=TRUE}
+
+```r
 #############################
 ## Imputing missing values ##
 #############################
@@ -109,12 +137,18 @@ Note that there are a number of days/intervals where there are missing values (c
 ## Number of na's in data set:
 sum.na <- sum(is.na(activity$steps))
 sum.na
+```
 
+```
+## [1] 2304
+```
+
+```r
 ## Input missing step values as mean for intervals (as "stepfull"):
 cnt <- length(activity$steps)
 for (i in 1:cnt) {
   if (is.na(activity$steps[i])>0) {
-       g <- avsteps$Av.Steps[avsteps$interval==activity$interval[i]]
+	     g <- avsteps$Av.Steps[avsteps$interval==activity$interval[i]]
 		 activity$stepfull[i] <- g
 	}
 	else {
@@ -128,10 +162,35 @@ sumstepfull <- aggregate(activity$stepfull, by=list(activity$date), FUN=sum, na.
 colnames(sumstepfull) <- c("date", "Sum.Stepfull")
 ## Histogram of stepfull
 attach(sumstepfull)
+```
+
+```
+## The following object is masked from sumsteps:
+## 
+##     date
+```
+
+```r
 hist(Sum.Stepfull)
+```
+
+![plot of chunk Inputing Missing Values](figure/Inputing Missing Values.png) 
+
+```r
 ## Mean and median of stepfull:
 mean(Sum.Stepfull)
+```
+
+```
+## [1] 10766
+```
+
+```r
 median(Sum.Stepfull)
+```
+
+```
+## [1] 10766
 ```
 Removing the missing values causes the mean value to dramatically rise and causes the mean and median to become equal.
   <br />
@@ -146,7 +205,8 @@ For this part the weekdays() function may be of some help here. Use the dataset 
 
 2.) Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). The plot should look something like the following, which was creating using simulated data:
 
-```{r Differences in Activity Patterns Weekdays vs. Weekends, echo=TRUE}
+
+```r
 ###############################################################################
 ## Are there differences in activity patterns between weekdays and weekends? ##
 ###############################################################################
@@ -187,3 +247,6 @@ actvtagg <- rbind(avwkend, avwkday)
 ## Plot of 5-minute interval (x-axis) vs. avg. steps taken: weekday/weekend(y-axis)
 xyplot(Av.Steps ~ interval | FactDay, data = actvtagg, type = "l", ylab ="Number of steps", layout=c(1,2))
 ```
+
+![plot of chunk Differences in Activity Patterns Weekdays vs. Weekends](figure/Differences in Activity Patterns Weekdays vs. Weekends.png) 
+
